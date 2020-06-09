@@ -542,6 +542,9 @@ class Profile:
         if 'iphone_struct' in node:
             # if loaded from JSON with load_structure_from_file()
             self._iphone_struct_ = node['iphone_struct']
+        if 'id' in node:
+            context.profile_id_cache[node['id']] = self
+        context.profile_name_cache[node['username']] = self
 
     @classmethod
     def from_username(cls, context: InstaloaderContext, username: str):
@@ -554,8 +557,11 @@ class Profile:
         :raises: :class:`ProfileNotExistsException`
         """
         # pylint:disable=protected-access
+        if username.lower() in context.profile_name_cache:
+            return context.profile_name_cache[username.lower()]
         profile = cls(context, {'username': username.lower()})
         profile._obtain_metadata()  # to raise ProfileNotExistException now in case username is invalid
+        context.profile_id_cache[profile.userid] = profile
         return profile
 
     @classmethod
@@ -582,7 +588,6 @@ class Profile:
         else:
             raise ProfileNotExistsException("No profile found, the user may have blocked you (ID: " +
                                             str(profile_id) + ").")
-        context.profile_id_cache[profile_id] = profile
         return profile
 
     def _asdict(self):

@@ -78,6 +78,9 @@ class InstaloaderContext:
         # Cache profile from id (mapping from id to Profile)
         self.profile_id_cache = dict()           # type: Dict[int, Any]
 
+        # Cache profile from name (mapping from username to Profile)
+        self.profile_name_cache = dict()         # type: Dict[str, Any]
+
     @contextmanager
     def anonymous_copy(self):
         session = self._session
