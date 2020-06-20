@@ -544,7 +544,7 @@ class Profile:
             self._iphone_struct_ = node['iphone_struct']
 
     @classmethod
-    def from_node(cls, context: InstaloaderContext, node: Dict[str, Any]):
+    def from_node(cls, context: InstaloaderContext, node: Dict[str, Any]) -> 'Profile':
         assert 'username' in node
         if node['username'] in context.profile_name_cache:
             return context.profile_name_cache[node['username']]
