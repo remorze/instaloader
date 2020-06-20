@@ -465,11 +465,9 @@ class Instaloader:
         """Returns the Instagram username to which given :class:`requests.Session` object belongs, or None."""
         data = self.context.graphql_query("d6f4427fbe92d846298cf93df0b937d3", {}).get('data', {}).get('user')
         if data is not None:
-            profile = Profile(self.context, {'id': data.get('id'),
-                                             'username': data.get('username'),
-                                             'profile_pic_url_hd': data.get('profile_pic_url')})
-            self.context.profile_id_cache[profile.userid] = profile
-            self.context.profile_name_cache[profile.username] = profile
+            profile = Profile.from_node(self.context, {'id': data.get('id'),
+                                                       'username': data.get('username'),
+                                                       'profile_pic_url_hd': data.get('profile_pic_url')})
             return profile.username
         return None
 
